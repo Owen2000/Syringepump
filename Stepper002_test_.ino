@@ -25,16 +25,32 @@ void setup(){
   MenuPage = 1;   MenuDisplay(MenuPage);}
 
 void loop() {  
-  Btn_push = ReadKeypad();   Btnval = digitalRead(Btn); MenuPage = 1; if(MenuPage != MenuPageOld){MenuDisplay(MenuPage);  MenuPageOld = MenuPage;}
-  if (MenuPage == 1)    {if (Btn_push == 'U' && volume < 10) volume += 1;     if (Btn_push == 'D' && volume >  0 ) volume -= 1;
-                         if (volumeOld != volume) {lcd.setCursor(8, 0);  lcd.print(volume);    volumeOld = volume;}
-                         if (Btn_push == 'R' && times < 100) times += 1;       if (Btn_push == 'L' && times >  0 ) times -= 1;
-                         if (timesold != times) {lcd.setCursor(8, 1);  lcd.print(times);    timesold = times;}
-  if (Btn_push == 'S' ) {Refill(volume,times); MenuDisplay(MenuPage);}  
-  if (Btnval   == LOW ) {Inject(volume,times); MenuDisplay(MenuPage);}}  delay(500);}//loop
+  Btn_push = ReadKeypad();   Btnval = digitalRead(Btn); 
+  if(MenuPage != MenuPageOld){MenuDisplay(MenuPage);  MenuPageOld = MenuPage;}
+  if (MenuPage == 1) {
+    if (Btn_push == 'U' && volume < 10) volume += 1;     if (Btn_push == 'D' && volume >  0 ) volume -= 1;
+    if (volumeOld != volume) {lcd.setCursor(8, 0);  lcd.print(volume);    volumeOld = volume;}
+    if (Btn_push == 'R' && times < 100) times += 1;       if (Btn_push == 'L' && times >  0 ) times -= 1;
+    if (timesold != times) {lcd.setCursor(8, 1);  lcd.print(times);    timesold = times;}
+   
+    if (Btn_push == 'S' ) {Refill(volume,times); MenuDisplay(MenuPage);}  
+    if (Btnval   == LOW ) {Inject(volume,times); MenuDisplay(MenuPage);}
+  }  
+  delay(500);
+}//loop
   
-void MenuDisplay(int page) {switch(page){case 1:lcd.clear();  lcd.setCursor(0, 0);lcd.print("Volume: ");      lcd.setCursor(8, 0);lcd.print(volume);lcd.print(" ml");      
-                                                              lcd.setCursor(0, 1);lcd.print("Waktu:  ");      lcd.setCursor(8, 1);lcd.print(times); lcd.print(" sec"); break;}}
+void MenuDisplay(int page) {
+  switch(page){
+    case 1:
+      lcd.clear();  
+      lcd.setCursor(0, 0);lcd.print("Volume: ");      
+      lcd.setCursor(8, 0);lcd.print(volume);    lcd.print(" ml");      
+                                                              
+      lcd.setCursor(0, 1);lcd.print("Waktu:  ");      
+      lcd.setCursor(8, 1);lcd.print(times);     lcd.print(" sec"); 
+      break;
+  }
+}
 void Inject(unsigned long ml, unsigned int sec){previousMillis = millis();  currentMillis = previousMillis;  interval = ml *multiplier;
   f = ml*1000;                  r = (f/(4*2*166.8));                          t = (sec*1000/(x*r))/2*1000; //f = mL to uL //r = rotasi //t = wkt untuk delayMicrosecond
   lcd.setCursor(0, 1);  lcd.print("                ");  digitalWrite(dir, HIGH);      
