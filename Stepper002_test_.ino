@@ -51,15 +51,63 @@ void MenuDisplay(int page) {
       break;
   }
 }
-void Inject(unsigned long ml, unsigned int sec){previousMillis = millis();  currentMillis = previousMillis;  interval = ml *multiplier;
-  f = ml*1000;                  r = (f/(4*2*166.8));                          t = (sec*1000/(x*r))/2*1000; //f = mL to uL //r = rotasi //t = wkt untuk delayMicrosecond
-  lcd.setCursor(0, 1);  lcd.print("                ");  digitalWrite(dir, HIGH);      
-  for (i = 0; i < x*r; i++){digitalWrite(pul, HIGH);      delayMicroseconds(t);       digitalWrite(pul, LOW) ;      delayMicroseconds(t);}
-  lcd.setCursor(3, 1);      lcd.print("Inject Done");   delay(1000);}
-void Refill(unsigned long ml, unsigned int sec) {  previousMillis = millis();  currentMillis = previousMillis;  interval = ml *multiplier;
-  f = ml*1000;                  r = (f/(4*2*166.8));                          t = (sec*1000/(x*r))/2*1000; 
-  lcd.setCursor(0, 1);  lcd.print("                ");   digitalWrite(dir, LOW);       
-  for (i = 0; i < x*r; i++){digitalWrite(pul, HIGH);      delayMicroseconds(t);      digitalWrite(pul, LOW) ;      delayMicroseconds(t);  }
-  lcd.setCursor(3, 1);  lcd.print("Refill Done");   delay(1000);}
-char ReadKeypad() {Keypad_value = analogRead(keypad_pin);if(Keypad_value < 100)return 'R';  else if(Keypad_value < 200)return 'U';  else if(Keypad_value < 400)return 'D';  
-                                                         else if (Keypad_value < 600) return 'L';  else if (Keypad_value < 800) return 'S'; else return 0;}
+void Inject(unsigned long ml, unsigned int sec){
+  lcd.setCursor(0, 1);  
+  lcd.print("                ");  
+  
+  previousMillis = millis();  
+  currentMillis = previousMillis;  
+  interval = ml *multiplier;
+  
+  f = ml*1000;
+  r = (f/(4*2*166.8));
+  t = (sec*1000/(x*r))/2*1000; //f = mL to uL //r = rotasi //t = wkt untuk delayMicrosecond
+  
+  digitalWrite(dir, HIGH);      
+  for (i = 0; i < x*r; i++){
+    digitalWrite(pul, HIGH);
+    delayMicroseconds(t);
+    digitalWrite(pul, LOW) ;
+    delayMicroseconds(t);
+  }
+  
+  lcd.setCursor(3, 1);
+  lcd.print("Inject Done");
+  
+  delay(1000);
+}
+
+void Refill(unsigned long ml, unsigned int sec) {
+  previousMillis = millis();
+  currentMillis = previousMillis;
+  interval = ml *multiplier;
+  
+  f = ml*1000;
+  r = (f/(4*2*166.8));
+  t = (sec*1000/(x*r))/2*1000; 
+  
+  lcd.setCursor(0, 1);
+  lcd.print("                ");
+  
+  digitalWrite(dir, LOW);       
+  for (i = 0; i < x*r; i++){
+    digitalWrite(pul, HIGH);
+    delayMicroseconds(t);
+    digitalWrite(pul, LOW);
+    delayMicroseconds(t);
+  }
+  
+  lcd.setCursor(3, 1);
+  lcd.print("Refill Done");
+  delay(1000);
+}
+
+char ReadKeypad() {
+  Keypad_value = analogRead(keypad_pin);
+  if(Keypad_value < 100)return 'R';
+  else if(Keypad_value < 200)return 'U';
+  else if(Keypad_value < 400)return 'D';
+  else if (Keypad_value < 600) return 'L';
+  else if (Keypad_value < 800) return 'S';
+  else return 0;
+}
