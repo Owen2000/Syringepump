@@ -3,15 +3,29 @@ LiquidCrystal lcd(8, 9, 4, 5, 6, 7);
 #define pul 3 //Pulse
 #define dir 2 //Direction
 #define x 3200 //Steps per revolution
-float f, r, i ; int keypad_pin = A0;  int Keypad_value = 0; int Keypad_value_old = 0;   char Btn_push;    int Btn = 49;   int Btnval = 0;
-int volume = 1; int volumeOld = 1;    int MenuPage = 1; int MenuPageOld = 1;    int times = 1;  int timesold = 1;
-unsigned long t ;    int clicks = 0;   int okein = 0;  unsigned long timePress = 0;  unsigned long timePressLimit = 0;
-long previousMillis = 0;  unsigned long currentMillis ;   long interval = 1000;   unsigned long multiplier = 1000; //value to change based on calibration
+float f, r, i ; 
+unsigned long t ;
 
-void setup(){lcd.begin(16, 2);  analogWrite(10, 20);  lcd.setCursor(2, 0);  lcd.print("Syringe Pump");  lcd.setCursor(6, 1);  lcd.print("Test");  delay(300);  
-              MenuPage = 1;   MenuDisplay(MenuPage);  pinMode(Btn, INPUT);  pinMode(dir, OUTPUT);       pinMode(pul, OUTPUT);}
+int keypad_pin = A0;  int Keypad_value = 0; int Keypad_value_old = 0;   
+char Btn_push;        int Btn = 49;   int Btnval = 0;
+int volume = 1;       int volumeOld = 1;    
+int MenuPage = 1;     int MenuPageOld = 1;    
+int times = 1;        int timesold = 1;
 
-void loop() {  Btn_push = ReadKeypad();   Btnval = digitalRead(Btn); MenuPage = 1; if(MenuPage != MenuPageOld){MenuDisplay(MenuPage);  MenuPageOld = MenuPage;}
+long previousMillis = 0;    unsigned long currentMillis ;   
+long interval = 1000;       unsigned long multiplier = 1000; //value to change based on calibration
+
+void setup(){
+  pinMode(dir, OUTPUT);       pinMode(pul, OUTPUT);  
+  pinMode(Btn, INPUT);
+  lcd.begin(16, 2);  analogWrite(10, 20);  
+  lcd.setCursor(2, 0);  lcd.print("Syringe Pump");  
+  lcd.setCursor(6, 1);  lcd.print("Test");  
+  delay(300);  
+  MenuPage = 1;   MenuDisplay(MenuPage);}
+
+void loop() {  
+  Btn_push = ReadKeypad();   Btnval = digitalRead(Btn); MenuPage = 1; if(MenuPage != MenuPageOld){MenuDisplay(MenuPage);  MenuPageOld = MenuPage;}
   if (MenuPage == 1)    {if (Btn_push == 'U' && volume < 10) volume += 1;     if (Btn_push == 'D' && volume >  0 ) volume -= 1;
                          if (volumeOld != volume) {lcd.setCursor(8, 0);  lcd.print(volume);    volumeOld = volume;}
                          if (Btn_push == 'R' && times < 100) times += 1;       if (Btn_push == 'L' && times >  0 ) times -= 1;
